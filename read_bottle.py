@@ -3,17 +3,38 @@ import sys
 from pytesseract import image_to_string
 tesseract = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
 
-# img_input = sys.argv[1]
 
-def perscription(img):
-    img = Image.open('./hello.jpg')
+def perscription(med):
+    img = Image.open(med)
 
     text = image_to_string(img)
     return text
 
+def verify_medication(scanned, expected = 'None'):
+
+    if (expected != 'None'):
+        print(scanned)
+        check_label = scanned.find(expected)
+        if check_label != -1:
+            print("This is the correct medication")
+            return True
+        else:
+            print("This is the wrong medication please try ")
+            return False
+
+    else:
+        print("Please scan a label to check if it's the correct medication")
+        return False
 
 
+right_med = './med_label.jpg'
+wrong_med = './RxScan.jpg'
+text = perscription(right_med)
+verify_medication(text, 'Glucophage')
+input("Press Enter to continue...")
 
+text = perscription(wrong_med)
+verify_medication(text, 'Glucophage')
 
 
 
